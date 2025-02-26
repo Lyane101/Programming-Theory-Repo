@@ -48,7 +48,7 @@ public class Animal
 		{
 		    Debug.Log(m_AnimalName + " clicked...");
 			animator.Play("Eyes_Happy");
-		}
+        }
 		else
 		{
 			animator.Play("Eyes_Blink");
@@ -56,12 +56,13 @@ public class Animal
 		animator.SetBool("IsClicked", isSelected);
 	}
 	
-	public void TellName(TextMeshPro textMeshObj, bool isSelected)
+	public void TellName(TextMeshPro textMeshObj, bool isSelected, int soundIndex)
 	{
 		if (isSelected)
 		{
 			Debug.Log(AnimalName + " is telling it's name...");
-		}
+            Voice(soundIndex);
+        }
 		textMeshObj.gameObject.SetActive(isSelected);
 	}
 	
@@ -79,14 +80,20 @@ public class Animal
 	{
 		Debug.Log("Sitting...");
 	}
-	
-	public void DoSomething(Animator animator)
+
+    public void Voice(int soundIndex)
+    {
+        AudioManager.instance.PlaySoundEffect(soundIndex);
+    }
+
+    public void DoSomething(Animator animator, int jumpSoundIndex, int trickSoundIndex, int sitSoundIndex)
 	{
 		jumpEventHandler = (key) =>
         {
             if (key == KeyCode.Z)
             {
                 Jump(animator);
+				Voice(jumpSoundIndex);
             }
         };
 		
@@ -95,6 +102,7 @@ public class Animal
             if (key == KeyCode.X)
             {
                 Trick(animator);
+                Voice(trickSoundIndex);
             }
         };
 		
@@ -103,6 +111,7 @@ public class Animal
             if (key == KeyCode.C)
             {
                 Sit(animator);
+                Voice(sitSoundIndex);
             }
         };
 		
